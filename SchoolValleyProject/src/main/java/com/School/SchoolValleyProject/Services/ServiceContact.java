@@ -10,11 +10,12 @@ import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 //@RequestScope
-//@SessionScope
+//@SessionScop
 @ApplicationScope
 public class ServiceContact {
 
@@ -22,38 +23,39 @@ public class ServiceContact {
     @Autowired
     private ContactRepository contactRepository;
 
-
-
-    public boolean saveMessage(Contact contact)
-    {
-        boolean isSaved=false;
+    /**
+     * Save Contact Details into DB
+     * @param contact
+     * @return boolean
+     */
+    public boolean saveMessage(Contact contact){
+        boolean isSaved = false;
         contact.setStatus(ValleyPublicConst.OPEN);
-        contact.setCreatedAt(LocalDateTime.now());
         contact.setCreatedBy(ValleyPublicConst.ANONYMOUS);
-        int result=contactRepository.saveContactMsg(contact);
-
-
-
-       if (result>0)
-          isSaved=true;
-
-       return isSaved;
+        contact.setCreatedAt(LocalDateTime.now());
+        Contact savedContact = contactRepository.save(contact);
+        if(null != savedContact && savedContact.getContactId()>0) {
+            isSaved = true;
+        }
+        return isSaved;
     }
 
-    public List<Contact> findMsgsWithOpenStatus()
-    {
-        List<Contact> contactMsgs=contactRepository.findMsgsWithStatus(ValleyPublicConst.OPEN);
-
+    public List<Contact> findMsgsWithOpenStatus(){
+        List<Contact> contactMsgs = contactRepository.findByStatus(ValleyPublicConst.OPEN);
         return contactMsgs;
     }
 
-    public boolean UpdateMsgStatus(int contactId,String Updated_by)
-    {
-        boolean isUpdated=false;
-        int result=contactRepository.updatemsgStatus(contactId,ValleyPublicConst.CLOSE,Updated_by);
-        if(result>0)
-        {
-            isUpdated=true;
+    public boolean UpdateMsgStatus(int contactId, String updatedBy){
+        boolean isUpdated = false;
+        Optional<Contact> contact = contactRepository.findById(contactId);
+        contact.ifPresent(contact1 -> {
+            contact1.setStatus(ValleyPublicConst.CLOSE);
+            contact1.setUpdatedBy(updatedBy);
+            contact1.setUpdatedAt(LocalDateTime.now());
+        });
+        Contact updatedContact = contactRepository.save(contact.get());
+        if(null != updatedContact && updatedContact.getUpdatedBy()!=null) {
+            isUpdated = true;
         }
         return isUpdated;
     }

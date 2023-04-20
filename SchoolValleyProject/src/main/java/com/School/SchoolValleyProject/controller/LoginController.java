@@ -42,11 +42,11 @@ public class LoginController {
     public String logoutPage(HttpServletRequest request, HttpServletResponse response)
 
     {
-       Authentication atuh= SecurityContextHolder.getContext().getAuthentication();
-       if(atuh!=null)
-       {
-           new SecurityContextLogoutHandler().logout(request,response,atuh);
-       }
+        Authentication atuh= SecurityContextHolder.getContext().getAuthentication();
+        if(atuh!=null)
+        {
+            new SecurityContextLogoutHandler().logout(request,response,atuh);
+        }
         return "redirect:/login?logout=true";
     }
 }
