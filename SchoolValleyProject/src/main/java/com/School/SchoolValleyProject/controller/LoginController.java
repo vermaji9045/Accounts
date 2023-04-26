@@ -19,7 +19,9 @@ public class LoginController {
 
     @RequestMapping(value = "/login",method = {RequestMethod.GET,RequestMethod.POST})
 
-    public String displayLoginPage(@RequestParam(value = "error",required = false) String error, @RequestParam(value = "logout",required = false)String logout, Model model)
+    public String displayLoginPage(@RequestParam(value = "error",required = false) String error,
+                                   @RequestParam(value = "logout",required = false)String logout, Model model,
+                                   @RequestParam(value = "register",required = false) String register,Model model1)
     {
         String errorMessage=null;
 
@@ -30,6 +32,10 @@ public class LoginController {
         if(logout!=null)
         {
             errorMessage="You have been Successfully logout";
+        }
+        if(register!=null)
+        {
+            errorMessage="You have been sign in successfully";
         }
 
         model.addAttribute("errorMessge",errorMessage);

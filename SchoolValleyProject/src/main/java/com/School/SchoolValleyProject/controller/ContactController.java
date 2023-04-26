@@ -77,9 +77,9 @@ public class ContactController  {
     }
 
     @RequestMapping(value = "/closeMsg",method = GET)
-    public String closeMsg(@RequestParam int id, Authentication authentication)
+    public String closeMsg(@RequestParam int id)
     {
-        serviceContact.UpdateMsgStatus(id,authentication.getName());
+        serviceContact.UpdateMsgStatus(id);
         return "redirect:/displayMessages";
     }
 }

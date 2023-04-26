@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "Holidays")
+@Table(name = "holidays")
 public class Holiday extends BaseEntity {
 
     @Id
