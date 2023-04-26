@@ -61,5 +61,12 @@ public class Person extends BaseEntity{
     @PasswordValidator
     private String confirmPwd;
 
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,targetEntity = Address.class)
+    @JoinColumn(name="address_id" ,referencedColumnName="addressid",nullable = true)
+    private Address address;
+
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST, targetEntity = Roles.class)
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id",nullable = false)
+    private Roles roles;
 
 }

@@ -1,7 +1,9 @@
 package com.School.SchoolValleyProject.controller;
 
 import com.School.SchoolValleyProject.Model.Person;
+import com.School.SchoolValleyProject.Services.PersonService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,8 +18,8 @@ import javax.validation.Valid;
 @RequestMapping("public")
 public class PublicController {
 
-   // @Autowired
-    //PersonService personService;
+   @Autowired
+   PersonService personService;
 
     @RequestMapping(value = "/register",method = {RequestMethod.GET})
     public String displayRegisterPage(Model model)
@@ -35,6 +37,14 @@ public class PublicController {
             return "register.html";
 
         }
-        return "redirect:/login?register=true";
+
+        boolean issaved=personService.CreateNewUser(person);
+        if (issaved) {
+            return "redirect:/login?register=true";
+        }else
+        {
+            return "register.html";
+
+        }
     }
 }
