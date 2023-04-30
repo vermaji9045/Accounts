@@ -6,6 +6,7 @@ import com.School.SchoolValleyProject.Model.Roles;
 import com.School.SchoolValleyProject.repository.PersonRepository;
 import com.School.SchoolValleyProject.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,9 @@ public class PersonService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     public boolean CreateNewUser(Person person) {
         boolean issave = false;
 
@@ -23,8 +27,9 @@ public class PersonService {
 
         person.setRoles(roles);
 
+        person.setPwd(passwordEncoder.encode(person.getPwd()));
         person = personRepository.save(person);
-        if (null != person && person.getPersonid() > 0) {
+        if (null != person && person.getPerson_id() > 0) {
             issave = true;
         }
         return issave;

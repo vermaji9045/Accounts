@@ -33,7 +33,7 @@ public class Person extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
-    private int personid;
+    private int person_id;
 
     @NotBlank(message = "Name must not be Blank")
     @Size(min=3,message = "Name must have at least 5 characters")
