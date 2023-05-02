@@ -24,14 +24,15 @@ public class FieldsValueMatchValidator
                 .getPropertyValue(fieldMatch);
         if (fieldValue != null) {
 
-            if(fieldValue.toString().startsWith("$2a"))
-            {
-                return true;
-        }
-            else
-            {
+//            if(fieldValue.toString().startsWith("$2a"))
+//            {
+//                return true;
+//        }
+//            else
+//            {
             return fieldValue.equals(fieldMatchValue);
-        } }else {
+//        }
+    }else {
             return fieldMatchValue == null;
         }
     }

@@ -31,7 +31,7 @@ public class ValleySchoolSecurity implements AuthenticationProvider {
 
        if(null!=person &&person.getPerson_id()>0 && passwordEncoder.matches(pwd,person.getPwd()))
        {
-           return new UsernamePasswordAuthenticationToken(person.getName(),null, getGrantedAuthorities(person.getRoles()));
+           return new UsernamePasswordAuthenticationToken(email,null, getGrantedAuthorities(person.getRoles()));
        }
        else
        {

@@ -18,7 +18,7 @@ public class Address extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "native")
     @GenericGenerator(name = "native",strategy = "native")
-    private int addressid;
+    private int addressId;
 
     @NotBlank(message = "Address must not be Blank")
     @Size(min = 10,message = "Address must be 5 characters")
@@ -35,7 +35,7 @@ public class Address extends BaseEntity{
 
     @NotBlank(message = "ZipCode must not be Blank")
     @Pattern(regexp = "(^$|(0-9){6})",message = "Zip Code must have 6 gigits")
-    private int zipcode;
+    private String zipCode;
 
 
 

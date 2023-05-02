@@ -62,7 +62,7 @@ public class Person extends BaseEntity{
     private String confirmPwd;
 
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,targetEntity = Address.class)
-    @JoinColumn(name="address_id" ,referencedColumnName="addressid",nullable = true)
+    @JoinColumn(name="address_id" ,referencedColumnName="addressId",nullable = true)
     private Address address;
 
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST, targetEntity = Roles.class)

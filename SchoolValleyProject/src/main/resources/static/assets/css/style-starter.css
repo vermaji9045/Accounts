@@ -21633,3 +21633,11 @@ label {
   margin: 50px;
 }
 
+.control-label:after
+{
+ content:"*";
+ color:red;
+}
+
+
+
