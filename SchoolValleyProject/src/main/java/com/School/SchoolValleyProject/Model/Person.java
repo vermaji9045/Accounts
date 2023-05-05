@@ -69,4 +69,8 @@ public class Person extends BaseEntity{
     @JoinColumn(name = "role_id", referencedColumnName = "role_id",nullable = false)
     private Roles roles;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
+    private ValleyClass valleyClass;
+
 }
