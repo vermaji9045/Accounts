@@ -79,7 +79,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="valleyClass: ${eazyClasses}">
+            <tr th:each="valleyClass: ${ValleyClasses}">
                 <td th:text="${valleyClass.classId}"></td>
                 <td th:text="${valleyClass.name}"></td>
                 <td><a th:href="@{/admin/displayStudents(classId=${valleyClass.classId})}" class="btn btn-success">VIEW</a></td>
