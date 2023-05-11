@@ -8,12 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,4 +55,51 @@ public class AdminController {
         ModelAndView modelAndView=new ModelAndView("redirect:/admin/displayClasses");
         return modelAndView;
     }
+
+
+    @GetMapping("/displayStudents")
+    public ModelAndView displayStudents(Model model, @RequestParam int classId, HttpSession session,
+                                        @RequestParam(value = "error", required = false) String error) {
+        String errorMessage = null;
+        ModelAndView modelAndView = new ModelAndView("students.html");
+        Optional<ValleyClass> valleyClass = valleyClassRepository.findById(classId);
+        modelAndView.addObject("valleyClass",valleyClass.get());
+        modelAndView.addObject("person",new Person());
+        session.setAttribute("valleyClass",valleyClass.get());
+        if(error != null) {
+            errorMessage = "Invalid Email entered!!";
+            modelAndView.addObject("errorMessage", errorMessage);
+        }
+        return modelAndView;
+    }
+    @PostMapping("/addStudent")
+    public ModelAndView addStudent(Model model, @ModelAttribute("person") Person person, HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        ValleyClass eazyClass = (ValleyClass) session.getAttribute("valleyClass");
+        Person personEntity = personRepository.readByEmail(person.getEmail());
+        if(personEntity==null || !(personEntity.getPerson_id()>0)){
+            modelAndView.setViewName("redirect:/admin/displayStudents?classId="+eazyClass.getClassId()
+                    +"&error=true");
+            return modelAndView;
+        }
+        personEntity.setValleyClass(eazyClass);
+        personRepository.save(personEntity);
+        eazyClass.getPersons().add(personEntity);
+        valleyClassRepository.save(eazyClass);
+        modelAndView.setViewName("redirect:/admin/displayStudents?classId="+eazyClass.getClassId());
+        return modelAndView;
+    }
+
+    @GetMapping("/deleteStudent")
+    public ModelAndView deleteStudent(Model model, @RequestParam int personId, HttpSession session) {
+        ValleyClass eazyClass = (ValleyClass) session.getAttribute("valleyClass");
+        Optional<Person> person = personRepository.findById(personId);
+        person.get().setValleyClass(null);
+        eazyClass.getPersons().remove(person.get());
+        ValleyClass eazyClassSaved = valleyClassRepository.save(eazyClass);
+        session.setAttribute("valleyClass",eazyClassSaved);
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/displayStudents?classId="+eazyClass.getClassId());
+        return modelAndView;
+    }
+
 }
