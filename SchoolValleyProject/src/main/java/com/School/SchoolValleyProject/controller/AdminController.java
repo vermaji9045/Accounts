@@ -1,7 +1,9 @@
 package com.School.SchoolValleyProject.controller;
 
+import com.School.SchoolValleyProject.Model.Courses;
 import com.School.SchoolValleyProject.Model.Person;
 import com.School.SchoolValleyProject.Model.ValleyClass;
+import com.School.SchoolValleyProject.repository.CoursesRepository;
 import com.School.SchoolValleyProject.repository.PersonRepository;
 import com.School.SchoolValleyProject.repository.ValleyClassRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,9 @@ public class AdminController {
     ValleyClassRepository valleyClassRepository;
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    CoursesRepository coursesRepository;
 
     @RequestMapping("/displayClasses")
     public ModelAndView displayclasses(Model model)
@@ -99,6 +104,16 @@ public class AdminController {
         ValleyClass eazyClassSaved = valleyClassRepository.save(eazyClass);
         session.setAttribute("valleyClass",eazyClassSaved);
         ModelAndView modelAndView = new ModelAndView("redirect:/admin/displayStudents?classId="+eazyClass.getClassId());
+        return modelAndView;
+    }
+
+    @GetMapping("/displayCourses")
+    public ModelAndView displayCourses(Model model)
+    {
+        List<Courses>courses=coursesRepository.findAll();
+        ModelAndView modelAndView=new ModelAndView("courses_secure.html");
+        modelAndView.addObject("courses",new Courses());
+        model.addAttribute("course",new Courses());
         return modelAndView;
     }
 
