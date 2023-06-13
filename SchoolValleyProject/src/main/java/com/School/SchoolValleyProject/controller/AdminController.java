@@ -1,6 +1,6 @@
 package com.School.SchoolValleyProject.controller;
 
-import com.School.SchoolValleyProject.Model.Courses;
+import com.School.SchoolValleyProject.Model.courses;
 import com.School.SchoolValleyProject.Model.Person;
 import com.School.SchoolValleyProject.Model.ValleyClass;
 import com.School.SchoolValleyProject.repository.CoursesRepository;
@@ -110,10 +110,18 @@ public class AdminController {
     @GetMapping("/displayCourses")
     public ModelAndView displayCourses(Model model)
     {
-        List<Courses>courses=coursesRepository.findAll();
+        List<courses>courses=coursesRepository.findAll();
         ModelAndView modelAndView=new ModelAndView("courses_secure.html");
-        modelAndView.addObject("courses",new Courses());
-        model.addAttribute("course",new Courses());
+        modelAndView.addObject("courses",new courses());
+        model.addAttribute("course",new courses());
+        return modelAndView;
+    }
+    @PostMapping("/addNewCourse")
+    public ModelAndView addNewCourses(Model model,@ModelAttribute("course") courses course)
+    {
+        ModelAndView modelAndView=new ModelAndView();
+        coursesRepository.save(course);
+        modelAndView.setViewName("redirect:/admin/displayCourses");
         return modelAndView;
     }
 
