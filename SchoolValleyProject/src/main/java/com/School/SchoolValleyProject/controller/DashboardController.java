@@ -28,6 +28,10 @@ public class DashboardController {
         model.addAttribute("username", person.getName());
         model.addAttribute("roles", authentication.getAuthorities().toString());
         //throw new RuntimeException("It's been a bad day!!");
+        if(null!=person.getValleyClass()&& null!=person.getValleyClass().getName())
+        {
+            model.addAttribute("enrolledClass",person.getValleyClass().getName());
+        }
         session.setAttribute("loggedInPerson",person);
         return "dashboard.html";
     }
