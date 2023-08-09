@@ -51,7 +51,7 @@ public class ServiceContact {
 //        contact.ifPresent(contact1 -> {
 //            contact1.setStatus(ValleyPublicConst.CLOSE);
 //        });
-        int updatedContact = contactRepository.updateStatusById(ValleyPublicConst.CLOSE,contactId);//save(contact.get());
+        int updatedContact = contactRepository.updateMsgStatusNative(ValleyPublicConst.CLOSE,contactId);//save(contact.get());
 //        if(null != updatedContact && updatedContact.getUpdatedBy()!=null) {
 //            isUpdated = true;
 //        }

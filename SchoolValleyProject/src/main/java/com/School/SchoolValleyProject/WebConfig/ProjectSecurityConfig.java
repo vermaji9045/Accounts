@@ -28,7 +28,7 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/displayMessages/**").hasRole("ADMIN")
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .mvcMatchers("/student/**").hasRole("STUDENT")
-               // .mvcMatchers("/closeMsg/**").hasRole("ADMIN")
+                //.mvcMatchers("/subscribe/").permitAll()
                 .mvcMatchers("/login").permitAll()
                 .mvcMatchers("/public/**").permitAll()
                 .and().formLogin().loginPage("/login")
