@@ -3,7 +3,7 @@ package com.School.SchoolValleyProject.Model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Data
 @Entity

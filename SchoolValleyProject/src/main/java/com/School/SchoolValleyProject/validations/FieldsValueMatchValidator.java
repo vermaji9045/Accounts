@@ -2,7 +2,7 @@ package com.School.SchoolValleyProject.validations;
 
 import com.School.SchoolValleyProject.annotations.FieldsValueMatch;
 import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;;
 import org.springframework.beans.BeanWrapperImpl;
 //import javax.validation.ConstraintValidatorContext;
 
@@ -25,16 +25,12 @@ public class FieldsValueMatchValidator
         Object fieldMatchValue = new BeanWrapperImpl(value)
                 .getPropertyValue(fieldMatch);
         if (fieldValue != null) {
-
-//            if(fieldValue.toString().startsWith("$2a"))
-//            {
-//                return true;
-//        }
-//            else
-//            {
-            return fieldValue.equals(fieldMatchValue);
-//        }
-    }else {
+            if(fieldValue.toString().startsWith("$2a")){
+                return true;
+            }else {
+                return fieldValue.equals(fieldMatchValue);
+            }
+        } else {
             return fieldMatchValue == null;
         }
     }

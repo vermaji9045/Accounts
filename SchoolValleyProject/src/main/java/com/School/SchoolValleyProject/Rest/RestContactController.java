@@ -1,17 +1,23 @@
 package com.School.SchoolValleyProject.Rest;
 
 
+import com.School.SchoolValleyProject.Constants.ValleyPublicConst;
 import com.School.SchoolValleyProject.Model.Contact;
 import com.School.SchoolValleyProject.Model.Response;
 import com.School.SchoolValleyProject.repository.ContactRepository;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -22,7 +28,7 @@ public class RestContactController {
 
     @Autowired
     ContactRepository contactRepository;
-
+    JavaMailSender javaMailSender;
     @GetMapping("/getMessagesByStatus")
     public List<Contact> getMessagesByStatus(@RequestParam(name = "status") String status)
     {
@@ -55,4 +61,62 @@ public class RestContactController {
                 .body(response);
 
     }
+
+    @DeleteMapping("/deleteMsg")
+    public ResponseEntity<Response> deleteMsg(RequestEntity<Contact> requestEntity)
+    {
+        HttpHeaders headers=requestEntity.getHeaders();
+        headers.forEach((key,value)->
+        {
+            log.info(String.format("Header '%s'= %s",key,value.stream().collect(Collectors.joining("|"))));
+    });
+        Contact contact=requestEntity.getBody();
+        contactRepository.deleteById(contact.getContactId());
+        Response response= new Response();
+        response.setStatusCode("200");
+        response.setStatusMsg("Message Successfully Deleted");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @PatchMapping("/closeMsg")
+    public ResponseEntity<Response>colseMsg(@RequestBody Contact contactReq)
+    {
+        Response response=new Response();
+        Optional<Contact>contact=contactRepository.findById(contactReq.getContactId());
+        if(contact.isPresent()) {
+            if (contact.get().getStatus().equals("Close")) {
+
+                response.setStatusCode("208");
+                response.setStatusMsg("Status is already closed");
+                return ResponseEntity
+                        .status(HttpStatus.ALREADY_REPORTED)
+                        .body(response);
+            }
+            else
+            {
+
+            contact.get().setStatus(ValleyPublicConst.CLOSE);
+            contactRepository.save(contact.get());
+
+        }
+
+        }
+        else
+        {
+            response.setStatusCode("400");
+            response.setStatusMsg("Invalid Contact ID received");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(response);
+        }
+        response.setStatusCode("200");
+        response.setStatusMsg("Message Successfully Closed");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+
 }
