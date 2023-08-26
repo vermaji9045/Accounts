@@ -7,16 +7,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
-public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().ignoringAntMatchers("/saveMsg").ignoringAntMatchers("/public/**").and()
-                .authorizeHttpRequests()
+
+    @Configuration
+    public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.csrf().ignoringAntMatchers("/saveMsg").ignoringAntMatchers("/public/**").ignoringAntMatchers("/api/**").and()
+                    .authorizeHttpRequests()
                 .mvcMatchers("/home").permitAll()
                 .mvcMatchers("/displayProfile").authenticated()
+                .mvcMatchers("/api/**").authenticated()
                 .mvcMatchers("/updateProfile").authenticated()
                 .mvcMatchers("/course").permitAll()
                 .mvcMatchers("/about").permitAll()
@@ -38,7 +42,9 @@ public class ProjectSecurityConfig extends WebSecurityConfigurerAdapter {
               //.and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .and().httpBasic();
         http.headers().frameOptions().disable();
-    }
+
+
+        }
 
     @Bean
     public PasswordEncoder passwordEncoder()

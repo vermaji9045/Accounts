@@ -1,8 +1,10 @@
 package com.School.SchoolValleyProject.validations;
+
 import com.School.SchoolValleyProject.annotations.FieldsValueMatch;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+//import javax.validation.ConstraintValidatorContext;
 
 public class FieldsValueMatchValidator
         implements ConstraintValidator<FieldsValueMatch, Object> {

@@ -2,8 +2,10 @@ package com.School.SchoolValleyProject.annotations;
 
 import com.School.SchoolValleyProject.validations.FieldsValueMatchValidator;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+//import javax.validation.Constraint;
+//import javax.validation.Payload;
+import jakarta.validation.Payload;
+import jakarta.validation.Constraint;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
